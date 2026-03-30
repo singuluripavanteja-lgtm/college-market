@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Complete Your Profile - CollegeMart</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="login-box" style="width:340px;">
+        <h2 style="margin-bottom:4px;">Almost there!</h2>
+        <p class="subtitle">Complete your profile to start using CollegeMart</p>
+
+        <input type="text"   id="userName" placeholder="Your Name" />
+        <input type="number" id="year"     placeholder="Year (1–4)" min="1" max="4" required />
+        <input type="text"   id="branch"   placeholder="Branch (e.g. CSE, ECE)" required />
+        <input type="tel"    id="phNo"     placeholder="Mobile Number (optional)" maxlength="10" />
+
+        <button id="saveBtn" onclick="saveProfile()">Start Using CollegeMart →</button>
+
+        <div id="message"></div>
+    </div>
+
+    <script src="../shared.js"></script>
+    <script src="completeProfile.js"></script>
+</body>
+</html>

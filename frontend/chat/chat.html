@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Chat - CollegeMart</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f1117;
+            --surface: #1a1d27;
+            --surface2: #22263a;
+            --border: #2e3248;
+            --accent: #6c63ff;
+            --accent2: #ff6584;
+            --text: #e8eaf6;
+            --muted: #7b82a8;
+            --bubble-me: #6c63ff;
+            --bubble-them: #22263a;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* CHAT HEADER */
+        .chat-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 20px;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .back-btn {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 20px;
+            transition: color 0.2s;
+            line-height: 1;
+        }
+        .back-btn:hover { color: var(--text); }
+
+        .chat-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 16px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .chat-header-info { flex: 1; }
+        .chat-header-name {
+            font-weight: 600;
+            font-size: 15px;
+        }
+        .chat-header-sub {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        /* PRODUCT STRIP */
+        .product-strip {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 20px;
+            background: var(--surface2);
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .product-strip img {
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .product-strip-info { flex: 1; }
+        .product-strip-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+        }
+        .product-strip-price {
+            font-size: 12px;
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        /* MESSAGE AREA */
+        .messages-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            scroll-behavior: smooth;
+        }
+
+        .messages-area::-webkit-scrollbar { width: 4px; }
+        .messages-area::-webkit-scrollbar-track { background: transparent; }
+        .messages-area::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+        /* DATE DIVIDER */
+        .date-divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 10px 0;
+        }
+        .date-divider::before,
+        .date-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+        .date-divider span {
+            font-size: 11px;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        /* BUBBLES */
+        .bubble-row {
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+        }
+
+        .bubble-row.me { flex-direction: row-reverse; }
+
+        .bubble-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: var(--surface2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--muted);
+            flex-shrink: 0;
+        }
+
+        .bubble {
+            max-width: 65%;
+            padding: 10px 14px;
+            border-radius: 16px;
+            font-size: 14px;
+            line-height: 1.5;
+            position: relative;
+        }
+
+        .bubble-row.me .bubble {
+            background: var(--bubble-me);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .bubble-row.them .bubble {
+            background: var(--bubble-them);
+            color: var(--text);
+            border-bottom-left-radius: 4px;
+            border: 1px solid var(--border);
+        }
+
+        .bubble-time {
+            font-size: 10px;
+            margin-top: 4px;
+            opacity: 0.6;
+        }
+
+        .bubble-row.me .bubble-time { text-align: right; }
+
+        /* EMPTY */
+        .empty-chat {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--muted);
+            text-align: center;
+            gap: 10px;
+        }
+        .empty-chat .icon { font-size: 48px; opacity: 0.3; }
+        .empty-chat p { font-size: 14px; }
+
+        /* INPUT BAR */
+        .input-bar {
+            display: flex;
+            gap: 10px;
+            padding: 14px 20px;
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .input-bar textarea {
+            flex: 1;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            padding: 10px 14px;
+            resize: none;
+            outline: none;
+            max-height: 120px;
+            transition: border 0.2s;
+            line-height: 1.5;
+        }
+
+        .input-bar textarea:focus { border-color: var(--accent); }
+        .input-bar textarea::placeholder { color: var(--muted); }
+
+        .send-btn {
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            background: var(--accent);
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            align-self: flex-end;
+        }
+        .send-btn:hover { background: #5a52e0; }
+        .send-btn:active { transform: scale(0.92); }
+        .send-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        /* LOADING SKELETON */
+        .skeleton-msg {
+            height: 44px;
+            border-radius: 14px;
+            background: var(--surface);
+            animation: pulse 1.5s infinite;
+        }
+        .skeleton-msg.me { align-self: flex-end; width: 55%; }
+        .skeleton-msg.them { align-self: flex-start; width: 45%; }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.35; }
+        }
+
+        /* DEAL BAR */
+        .deal-banner {
+            padding: 12px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+        .deal-banner.info      { background: #eff6ff; color: #1e40af; }
+        .deal-banner.completed { background: #f0fdf4; color: #15803d; font-weight: 600; text-align: center; justify-content: center; }
+        .deal-banner.rejected  { background: #fef2f2; color: #b91c1c; text-align: center; justify-content: center; }
+        .deal-banner.deal-action { background: #fffbeb; color: #92400e; }
+
+        .confirm-btn {
+            background: #16a34a;
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background 0.2s;
+            flex-shrink: 0;
+        }
+        .confirm-btn:hover { background: #15803d; }
+        .confirm-btn:disabled { background: #86efac; cursor: not-allowed; }
+
+        /* INPUT AREA */
+        #inputArea { border-top: 1px solid var(--border); background: var(--bg); }
+        .input-row {
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+            padding: 12px 16px;
+        }
+        .input-row textarea {
+            flex: 1;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 10px 16px;
+            font-size: 14px;
+            font-family: inherit;
+            resize: none;
+            outline: none;
+            background: var(--surface);
+            color: var(--text);
+            max-height: 120px;
+            line-height: 1.4;
+            transition: border-color 0.2s;
+        }
+        .input-row textarea:focus { border-color: var(--accent); }
+        .input-row button {
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background 0.2s;
+            flex-shrink: 0;
+        }
+        .input-row button:hover { background: #2563eb; }
+        .input-row button:disabled { background: #93c5fd; cursor: not-allowed; }
+
+        .chat-closed {
+            padding: 16px;
+            text-align: center;
+            color: var(--subtext);
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-header">
+        <a href="../messages/messages.html" class="back-btn">←</a>
+        <div class="chat-avatar" id="chatAvatar">?</div>
+        <div class="chat-header-info">
+            <div class="chat-header-name" id="chatName">Loading...</div>
+            <div class="chat-header-sub" id="chatSub"></div>
+        </div>
+    </div>
+
+    <div class="product-strip" id="productStrip" style="display:none;">
+        <img id="productImg" src="" alt="">
+        <div class="product-strip-info">
+            <div class="product-strip-name" id="productName"></div>
+            <div class="product-strip-price" id="productPrice"></div>
+        </div>
+    </div>
+
+    <!-- Deal status bar -->
+    <div id="dealBar"></div>
+
+    <div class="messages-area" id="messagesArea">
+        <div class="skeleton-msg them"></div>
+        <div class="skeleton-msg me"></div>
+        <div class="skeleton-msg them"></div>
+    </div>
+
+    <!-- Dynamic input area (controlled by JS based on deal status) -->
+    <div id="inputArea">
+        <div class="input-row">
+            <textarea id="msgInput" placeholder="Type a message..." rows="1"></textarea>
+            <button id="sendBtn" onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script src="../shared.js"></script>
+    <script src="chat.js"></script>
+</body>
+</html>

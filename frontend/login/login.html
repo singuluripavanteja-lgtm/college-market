@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>CollegeMart - Login</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .login-box {
+            background: white;
+            border-radius: 16px;
+            padding: 44px 40px;
+            width: 340px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+        .logo-text {
+            font-size: 28px;
+            font-weight: 800;
+            color: #2c3e50;
+            letter-spacing: -0.5px;
+            margin-bottom: 4px;
+        }
+        .tagline {
+            font-size: 13px;
+            color: #888;
+            margin-bottom: 32px;
+        }
+        .college-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #eef6ff;
+            border: 1px solid #bee3f8;
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 12px;
+            color: #2980b9;
+            font-weight: 600;
+            margin-bottom: 28px;
+        }
+        .google-btn-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .restriction-note {
+            font-size: 12px;
+            color: #aaa;
+            line-height: 1.6;
+        }
+        .restriction-note strong { color: #555; }
+        #message {
+            margin-top: 14px;
+            font-size: 13px;
+        }
+        .error   { color: #e74c3c; }
+        .success { color: #27ae60; }
+        .loading { color: #888; }
+    </style>
+</head>
+<body>
+
+    <!-- Google One Tap prompt (top-right popup) -->
+    <div id="g_id_onload"
+        data-client_id="742348213801-ges12uftt3vr6l1e0bocc9corm7o5hk3.apps.googleusercontent.com"
+        data-callback="handleGoogleLogin"
+        data-auto_prompt="true"
+        data-auto_select="true">
+    </div>
+
+    <div class="login-box">
+        <div class="logo-text">CollegeMart</div>
+        <div class="tagline">NIT Andhra Pradesh Student Marketplace</div>
+
+        <div class="college-badge">
+            🎓 NIT Andhra Pradesh only
+        </div>
+
+        <div class="google-btn-wrapper">
+            <div class="g_id_signin"
+                data-type="standard"
+                data-shape="rectangular"
+                data-theme="outline"
+                data-text="signin_with"
+                data-size="large"
+                data-logo_alignment="left"
+                data-width="260">
+            </div>
+        </div>
+
+        <p class="restriction-note">
+            Only <strong>@student.nitandhra.ac.in</strong> Google accounts<br>are allowed to sign in.
+        </p>
+
+        <div id="message"></div>
+    </div>
+
+    <script src="../shared.js"></script>
+    <script src="login.js"></script>
+</body>
+</html>

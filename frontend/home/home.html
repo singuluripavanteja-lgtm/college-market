@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CollegeMart — Campus Marketplace</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="navbar">
+    <div class="logo">College<span>Mart</span></div>
+
+    <div class="nav-links">
+        <a href="../home/home.html">Home</a>
+        <div class="filter-dropdown">
+            <button class="filter-trigger" onclick="toggleBrowse(event)">Browse ▾</button>
+            <div class="dropdown-content">
+                <a href="#" onclick="filterProducts('all');this.closest('.dropdown-content').classList.remove('open')">🏷️ All Items</a>
+                <a href="#" onclick="filterProducts('sell');this.closest('.dropdown-content').classList.remove('open')">💰 For Sale</a>
+                <a href="#" onclick="filterProducts('rent');this.closest('.dropdown-content').classList.remove('open')">🔑 For Rent</a>
+                <a href="#" onclick="filterByCategory('Books & Notes');this.closest('.dropdown-content').classList.remove('open')">📚 Books & Notes</a>
+                <a href="#" onclick="filterByCategory('Electronics');this.closest('.dropdown-content').classList.remove('open')">💻 Electronics</a>
+                <a href="#" onclick="filterByCategory('Furniture');this.closest('.dropdown-content').classList.remove('open')">🪑 Furniture</a>
+                <a href="#" onclick="filterByCategory('Cycles & Vehicles');this.closest('.dropdown-content').classList.remove('open')">🚲 Cycles</a>
+                <a href="#" onclick="filterByCategory('Lab Equipment');this.closest('.dropdown-content').classList.remove('open')">🔬 Lab Equipment</a>
+                <a href="#" onclick="filterByCategory('Sports & Fitness');this.closest('.dropdown-content').classList.remove('open')">⚽ Sports</a>
+                <a href="#" onclick="filterByCategory('Clothing');this.closest('.dropdown-content').classList.remove('open')">👕 Clothing</a>
+                <a href="#" onclick="filterByCategory('Other');this.closest('.dropdown-content').classList.remove('open')">📦 Other</a>
+            </div>
+        </div>
+        <a href="../addItem/addItem.html" class="add-item-btn">+ List Item</a>
+        <a href="../messages/messages.html">
+            💬 Messages
+            <span id="unreadBadge" style="display:none;background:#e85d26;color:white;font-size:10px;padding:1px 6px;border-radius:10px;margin-left:2px;vertical-align:middle;"></span>
+        </a>
+        <a href="../profile/profile.html">Profile</a>
+        <a href="../admin/admin.html" id="adminLink" style="display:none;color:#f59e0b;">⚙️ Admin</a>
+        <button onclick="logout()" class="logout-btn">Sign out</button>
+    </div>
+
+    <div class="navbar-right">
+        <button class="dark-toggle" onclick="toggleDarkMode()" id="darkBtn" title="Toggle dark mode">🌙</button>
+        <div class="notif-wrapper">
+            <button class="notif-btn" onclick="toggleNotifications()" title="Notifications">
+                🔔<span class="notif-badge" id="notifBadge"></span>
+            </button>
+            <div class="notif-dropdown" id="notifDropdown">
+                <div class="notif-header">
+                    <h4>Notifications</h4>
+                    <button class="mark-all-btn" onclick="markAllRead()">Mark all read</button>
+                </div>
+                <div class="notif-list" id="notifList">
+                    <div class="notif-empty">Loading...</div>
+                </div>
+            </div>
+        </div>
+        <button class="hamburger" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</div>
+
+<div class="mobile-menu" id="mobileMenu">
+    <a href="../home/home.html">🏠 Home</a>
+    <a href="#" onclick="filterProducts('all');toggleMenu()">🏷️ All Items</a>
+    <a href="#" onclick="filterProducts('sell');toggleMenu()">💰 For Sale</a>
+    <a href="#" onclick="filterProducts('rent');toggleMenu()">🔑 For Rent</a>
+    <a href="#" onclick="filterByCategory('Books & Notes');toggleMenu()">📚 Books</a>
+    <a href="#" onclick="filterByCategory('Electronics');toggleMenu()">💻 Electronics</a>
+    <a href="#" onclick="filterByCategory('Cycles & Vehicles');toggleMenu()">🚲 Cycles</a>
+    <a href="../addItem/addItem.html">+ List Item</a>
+    <a href="../messages/messages.html">💬 Messages
+        <span id="unreadBadgeMobile" style="display:none;background:#e85d26;color:white;font-size:10px;padding:1px 6px;border-radius:10px;margin-left:4px;"></span>
+    </a>
+    <a href="../profile/profile.html">👤 Profile</a>
+    <button class="mobile-logout" onclick="logout()">🚪 Sign out</button>
+</div>
+
+<div id="announcementBanner"></div>
+
+<div class="main-content">
+    <div class="section-header">
+        <h2 id="viewTitle">All Available Items</h2>
+        <span class="item-count" id="itemCount"></span>
+    </div>
+    <div class="product-container" id="productContainer">
+        <!-- skeleton loaders -->
+        ${Array(8).fill(`
+        <div class="skeleton-card">
+            <div class="skeleton-img"></div>
+            <div class="skeleton-body">
+                <div class="skeleton-line"></div>
+                <div class="skeleton-line price"></div>
+                <div class="skeleton-line short"></div>
+            </div>
+        </div>`).join('')}
+    </div>
+</div>
+
+<script src="../shared.js"></script>
+<script src="home.js"></script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Item Details - CollegeMart</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../home/style.css">
+    <style>
+        .detail-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        .detail-card {
+            background: white;
+            border-radius: 14px;
+            box-shadow: 0 6px 25px rgba(0,0,0,0.1);
+            overflow: hidden;
+            display: flex;
+            gap: 0;
+        }
+        .detail-image {
+            width: 45%;
+            min-height: 350px;
+            object-fit: cover;
+        }
+        .detail-info {
+            flex: 1;
+            padding: 30px;
+        }
+        .detail-info h2 { margin: 0 0 10px; color: #2c3e50; font-size: 22px; }
+        .detail-price { font-size: 26px; font-weight: bold; color: #27ae60; margin: 10px 0; }
+        .detail-desc { color: #666; font-size: 14px; line-height: 1.6; margin: 15px 0; }
+        .detail-meta { margin: 15px 0; font-size: 14px; color: #888; }
+        .detail-meta span { display: block; margin-bottom: 6px; }
+        .detail-meta strong { color: #555; }
+        .btn-buy {
+            width: 100%;
+            padding: 13px;
+            background: #e67e22;
+            color: white;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            transition: background 0.2s;
+        }
+        .btn-buy:hover:not(:disabled) { background: #d35400; }
+        .btn-buy:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-contact {
+            width: 100%;
+            padding: 11px;
+            background: #3498db;
+            color: white;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            margin-top: 10px;
+        }
+        .btn-contact:hover { background: #2980b9; }
+        #statusMessage { margin-top: 12px; font-size: 14px; text-align: center; }
+        .sold-badge {
+            display: inline-block;
+            background: #e74c3c;
+            color: white;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        @media (max-width: 600px) {
+            .detail-card { flex-direction: column; }
+            .detail-image { width: 100%; min-height: 220px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">CollegeMart</div>
+        <div class="nav-links">
+            <a href="../home/home.html">← Back</a>
+            <a href="../profile/profile.html">Profile</a>
+            <button onclick="logout()" class="logout-btn">Logout</button>
+        </div>
+    </div>
+
+    <div class="detail-container">
+        <div id="detailContent">
+            <p>Loading...</p>
+        </div>
+    </div>
+
+    <script src="../shared.js"></script>
+    <script src="productDetail.js"></script>
+</body>
+</html>

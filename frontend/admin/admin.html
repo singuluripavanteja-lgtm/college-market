@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Admin Dashboard - CollegeMart</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../home/style.css">
+    <style>
+        body { background: var(--bg, #f4f7f6); color: var(--text, #2c3e50); }
+
+        .admin-wrap { max-width: 1100px; margin: 0 auto; padding: 24px 16px; }
+
+        /* Tabs */
+        .tabs { display: flex; gap: 0; border-bottom: 2px solid #e0e0e0; margin-bottom: 24px; flex-wrap: wrap; }
+        .tab-btn {
+            padding: 10px 22px; background: none; border: none;
+            font-size: 14px; font-weight: 600; color: #888; cursor: pointer;
+            border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all 0.2s;
+        }
+        .tab-btn.active { color: #3498db; border-bottom-color: #3498db; }
+        .tab-btn:hover  { color: #3498db; }
+
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+
+        /* Stats cards */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; margin-bottom: 28px; }
+        .stat-card {
+            background: var(--card-bg, #fff); border-radius: 12px;
+            padding: 20px 16px; text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+        }
+        .stat-num   { font-size: 32px; font-weight: 800; color: #3498db; }
+        .stat-label { font-size: 13px; color: var(--subtext, #888); margin-top: 4px; }
+
+        /* Tables */
+        .table-wrap { overflow-x: auto; background: var(--card-bg, #fff); border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th { padding: 12px 14px; text-align: left; background: #f8f9fa; color: #555; font-weight: 600; border-bottom: 1px solid var(--border, #eee); }
+        td { padding: 11px 14px; border-bottom: 1px solid var(--border, #eee); color: var(--text, #333); vertical-align: middle; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: rgba(52,152,219,0.04); }
+
+        .dark th { background: #263148; color: #94a3b8; border-bottom-color: #334155; }
+        .dark td { border-bottom-color: #334155; }
+
+        /* Badges */
+        .badge-admin   { background: #fef3c7; color: #92400e; padding: 2px 8px; border-radius: 10px; font-size: 11px; }
+        .badge-banned  { background: #fee2e2; color: #991b1b; padding: 2px 8px; border-radius: 10px; font-size: 11px; }
+        .badge-flagged { background: #ffe4e6; color: #be123c; padding: 2px 8px; border-radius: 10px; font-size: 11px; }
+        .badge-sold    { background: #dcfce7; color: #166534; padding: 2px 8px; border-radius: 10px; font-size: 11px; }
+
+        /* Action buttons */
+        .act-btn {
+            padding: 5px 12px; border: none; border-radius: 5px;
+            font-size: 12px; font-weight: 600; cursor: pointer; transition: opacity 0.2s; margin: 2px;
+        }
+        .act-btn:hover { opacity: 0.8; }
+        .btn-red    { background: #fee2e2; color: #991b1b; }
+        .btn-green  { background: #dcfce7; color: #166534; }
+        .btn-yellow { background: #fef3c7; color: #92400e; }
+        .btn-blue   { background: #dbeafe; color: #1d4ed8; }
+        .btn-gray   { background: #f1f5f9; color: #475569; }
+
+        /* Announcement form */
+        .ann-form { background: var(--card-bg, #fff); border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); margin-bottom: 20px; }
+        .ann-form h3 { margin: 0 0 16px; font-size: 16px; }
+        .ann-form input, .ann-form textarea, .ann-form select {
+            width: 100%; padding: 10px 12px; border: 1px solid var(--border, #ddd);
+            border-radius: 8px; font-size: 14px; margin-bottom: 12px;
+            background: var(--input-bg, #fff); color: var(--text, #333);
+            font-family: inherit; box-sizing: border-box;
+        }
+        .ann-form textarea { height: 80px; resize: vertical; }
+        .send-btn {
+            padding: 10px 24px; background: #3498db; color: white;
+            border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 14px;
+        }
+        .send-btn:hover { background: #2980b9; }
+
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+        .section-header h3 { margin: 0; font-size: 16px; }
+        .search-input {
+            padding: 7px 12px; border: 1px solid var(--border, #ddd); border-radius: 8px;
+            font-size: 13px; background: var(--input-bg, #fff); color: var(--text, #333); width: 220px;
+        }
+
+        .thumb { width: 48px; height: 40px; object-fit: cover; border-radius: 6px; }
+        .no-data { text-align: center; color: #aaa; padding: 32px; }
+
+        @media(max-width: 600px) {
+            .tab-btn { padding: 8px 14px; font-size: 13px; }
+            .stats-grid { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">⚙️ Admin</div>
+        <div class="nav-links">
+            <a href="../home/home.html">← Home</a>
+            <button onclick="logout()" class="logout-btn">Logout</button>
+        </div>
+        <div class="navbar-right">
+            <button class="dark-toggle" onclick="toggleDarkMode();syncDarkBtn()" id="darkBtn">🌙</button>
+            <button class="hamburger" onclick="document.getElementById('mobNav').classList.toggle('open')">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </div>
+    <div class="mobile-menu" id="mobNav">
+        <a href="../home/home.html">🏠 Home</a>
+        <button class="mobile-logout" onclick="logout()">🚪 Logout</button>
+    </div>
+
+    <div class="admin-wrap">
+        <h2 style="margin-bottom:20px;">Admin Dashboard</h2>
+
+        <!-- Stats -->
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card"><div class="stat-num" id="s-users">–</div><div class="stat-label">Total Users</div></div>
+            <div class="stat-card"><div class="stat-num" id="s-products">–</div><div class="stat-label">Total Listings</div></div>
+            <div class="stat-card"><div class="stat-num" id="s-sold">–</div><div class="stat-label">Sold Items</div></div>
+            <div class="stat-card"><div class="stat-num" id="s-flagged">–</div><div class="stat-label">Flagged Items</div></div>
+            <div class="stat-card"><div class="stat-num" id="s-ann">–</div><div class="stat-label">Active Alerts</div></div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('users')">👥 Users</button>
+            <button class="tab-btn" onclick="switchTab('listings')">📦 Listings</button>
+            <button class="tab-btn" onclick="switchTab('announcements')">📢 Announcements</button>
+        </div>
+
+        <!-- Users Tab -->
+        <div class="tab-panel active" id="tab-users">
+            <div class="section-header">
+                <h3>All Users</h3>
+                <input class="search-input" id="userSearch" placeholder="Search by name or email…" oninput="filterUsers()">
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>Name</th><th>Email</th><th>Branch</th><th>Year</th><th>Status</th><th>Actions</th></tr></thead>
+                    <tbody id="usersTable"><tr><td colspan="6" class="no-data">Loading…</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Listings Tab -->
+        <div class="tab-panel" id="tab-listings">
+            <div class="section-header">
+                <h3>All Listings</h3>
+                <input class="search-input" id="listingSearch" placeholder="Search by name or owner…" oninput="filterListings()">
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>Photo</th><th>Name</th><th>Owner</th><th>Type</th><th>Price</th><th>Status</th><th>Actions</th></tr></thead>
+                    <tbody id="listingsTable"><tr><td colspan="7" class="no-data">Loading…</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Announcements Tab -->
+        <div class="tab-panel" id="tab-announcements">
+            <div class="ann-form">
+                <h3>📢 Broadcast Announcement</h3>
+                <input type="text" id="annTitle" placeholder="Title (e.g. Maintenance notice)">
+                <textarea id="annBody" placeholder="Message to all students…"></textarea>
+                <select id="annType">
+                    <option value="info">ℹ️ Info</option>
+                    <option value="warning">⚠️ Warning</option>
+                    <option value="success">✅ Success</option>
+                </select>
+                <button class="send-btn" onclick="sendAnnouncement()">📤 Send to All Users</button>
+                <span id="annMsg" style="margin-left:12px;font-size:13px;"></span>
+            </div>
+            <h3 style="margin-bottom:14px;">Past Announcements</h3>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>Title</th><th>Message</th><th>Type</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+                    <tbody id="annTable"><tr><td colspan="6" class="no-data">Loading…</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="../shared.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>

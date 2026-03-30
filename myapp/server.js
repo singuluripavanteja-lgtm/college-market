@@ -8,7 +8,6 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
-const path = require('path');
 
 // Serve all frontend static files
 app.use(express.static(path.join(__dirname, '../frontend')));
